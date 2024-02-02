@@ -7,7 +7,8 @@ export default {
       compilerOptions: {
         "outDir": "dist",
         "declaration": true,
-      }
+      },
+      include: ['src/**/*.ts', 'src/**/*.tsx'],
     })
   ],
   external: ['react', 'react-dom'],
