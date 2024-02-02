@@ -14,23 +14,23 @@ export function createRenderRoot(id = 'layer-root'): HTMLElement {
 
 export interface ILayer<P = {}> {
   /**
-   * 子组件实例
-   * @note 只有当子组件为类组件时才有值
+   * Child component instance
+   * @note Only has a value when the child component is a class component
    */
   instance: ReactInstance | null;
 
   /**
-   * 挂载组件
-   * @param props 给子组件传递的props
+   * render component
+   * @param props Props passed to the child component
    */
   render(props?: Omit<P, 'layer'>): void;
 
   /**
-   * 销毁组件
+   * Destroy component
    */
   destroy(): void;
   /**
-   * 组件挂载根节点
+   * Root html node layer mounted
    */
   root: HTMLElement;
   Root: Root | null
@@ -44,9 +44,9 @@ export type LC<P> = ComponentType<LayerComponentProps<P>>;
 
 
 /**
- * 创建浮层
- * @param Component 子组件引用
- * @param root 挂载的根节点，默认#layer-root
+ * create layer
+ * @param Component child component definition
+ * @param root Root html node，default is #layer-root
  */
 export default function createLayer<P>(
     Component: LC<P>,

@@ -10,7 +10,9 @@ export default {
       }
     })
   ],
+  external: ['react', 'react-dom'],
   output: {
     file: 'dist/index.js',
+    format: 'esm',
   }
 }
