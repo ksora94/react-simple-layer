@@ -1,4 +1,4 @@
-import React, { ComponentType, ReactInstance } from 'react';
+import React, {ComponentType, ReactInstance, ReactNode} from 'react';
 import {createRoot, Root} from 'react-dom/client';
 
 export function createRenderRoot(id = 'layer-root'): HTMLElement {
@@ -23,7 +23,7 @@ export interface ILayer<P = {}> {
    * render component
    * @param props Props passed to the child component
    */
-  render(props?: Omit<P, 'layer'>): void;
+  render(props?: Omit<P, 'layer'>): ReactNode;
 
   /**
    * Destroy component
@@ -84,7 +84,10 @@ export default function createLayer<P>(
   }
 
   layer.render = function (props: P) {
-    return layer.Root?.render(createElement(Component, props));
+    const element = createElement(Component, props);
+
+    layer.Root?.render(element);
+    return element;
   };
   return layer;
 }

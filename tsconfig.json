@@ -4,7 +4,6 @@
     "module": "ESNext",
     "declaration": true,
     "skipLibCheck": true,
-    "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -14,10 +13,11 @@
     "noEmit": true,
     "noImplicitAny": false,
     "jsx": "react-jsx",
+    "types": ["vitest/globals"],
     "lib": ["es5", "dom", "es2015.promise", "es2017.object"]
   },
   "include": [
-    "src"
+    "src", "test"
   ],
   "exclude": [
     "./node_modules/**/*"
