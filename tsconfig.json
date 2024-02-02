@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "ESNext",
+    "declaration": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "noImplicitAny": false,
+    "jsx": "react-jsx",
+    "types": ["vitest/globals"],
+    "lib": ["es5", "dom", "es2015.promise", "es2017.object"]
+  },
+  "include": [
+    "src", "test"
+  ],
+  "exclude": [
+    "./node_modules/**/*"
+  ]
+}
