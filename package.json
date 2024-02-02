@@ -1,6 +1,6 @@
 {
   "name": "react-simple-layer",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A simple way to create a react layer.",
   "author": "ksora",
   "license": "MIT",
@@ -13,7 +13,6 @@
     "layer"
   ],
   "scripts": {
-    "dev": "node -v",
     "build": "rollup --config ./rollup.config.js",
     "test": "vitest --ui"
   },

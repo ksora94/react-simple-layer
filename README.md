@@ -1,6 +1,12 @@
 # react-simple-layer
 A simple way to create a react layer.
 
+## install
+
+```bash
+npm install react-simple-layer
+```
+
 ## createLayer
 
 ```typescript
