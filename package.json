@@ -1,6 +1,6 @@
 {
   "name": "react-simple-layer",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A simple way to create a react layer.",
   "author": "ksora",
   "license": "MIT",
@@ -11,6 +11,10 @@
     "react",
     "component",
     "layer"
+  ],
+  "files": [
+    "dist",
+    "src"
   ],
   "scripts": {
     "build": "rollup --config ./rollup.config.js",
@@ -24,6 +28,7 @@
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/react": "^18.2.51",
     "@types/react-dom": "^18.2.18",
+    "@types/react-test-renderer": "^18.0.7",
     "@vitejs/plugin-react": "^4.2.1",
     "@vitest/ui": "^1.2.2",
     "happy-dom": "^13.3.8",
@@ -34,8 +39,5 @@
     "typescript": "^5.3.3",
     "vite": "^5.0.12",
     "vitest": "^1.2.2"
-  },
-  "dependencies": {
-    "@types/react-test-renderer": "^18.0.7"
   }
 }
