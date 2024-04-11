@@ -69,8 +69,6 @@ export default function createLayer<P>(
     }
   };
 
-  layer.Root = createRoot(layer.root);
-
   function createElement(Comp: any, props: P) {
     function ref(layerComponent: ReactInstance | null) {
       if (layerComponent) layer.instance = layerComponent;
@@ -86,6 +84,7 @@ export default function createLayer<P>(
   layer.render = function (props: P) {
     const element = createElement(Component, props);
 
+    layer.Root = createRoot(layer.root);
     layer.Root?.render(element);
     return element;
   };
