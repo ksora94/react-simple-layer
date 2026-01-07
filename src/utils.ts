@@ -1,5 +1,5 @@
 import {type Layer, LayerStore} from './store';
-import {type FC} from 'react';
+import {createElement, type FC} from 'react';
 
 export interface LayerProps {
   layer: Layer;
@@ -20,7 +20,10 @@ export function createLayer<T = any>(Component: LC<T>, key?: string): LayerInsta
       LayerStore.destroy(layer.key);
     },
     component: props => {
-      return <Component layer={layer} {...props}/>
+      return createElement(Component, {
+        layer,
+        ...props
+      })
     }
   }
 

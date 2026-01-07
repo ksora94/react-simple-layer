@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {createElement} from 'react';
 import {createPortal} from 'react-dom';
 import {useLayerStore} from './store';
 
@@ -22,7 +22,7 @@ export const LayerRoot: React.FC<LayerRootProps> = ({root = 'layer-root'}) => {
 
 
   return createPortal(
-      store.map(layer => React.createElement(layer.component, {
+      store.map(layer => createElement(layer.component, {
         ...layer.props,
         key: layer.key,
       })),
