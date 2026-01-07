@@ -1,7 +1,7 @@
 import typescript from '@rollup/plugin-typescript';
 
 export default {
-  input: 'src/index.tsx',
+  input: 'src/index.ts',
   plugins: [
     typescript({
       compilerOptions: {
