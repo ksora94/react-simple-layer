@@ -1,7 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`Create layer 1`] = `
-<div>
-  react-simple-layer
-</div>
-`;

@@ -13,9 +13,9 @@
     "noEmit": true,
     "noImplicitAny": false,
     "jsx": "react-jsx",
-    "types": ["vitest/globals"],
+    "types": ["vitest/globals", "@testing-library/jest-dom"],
     "outDir": "dist",
-    "lib": ["es5", "dom", "es2015.promise", "es2017.object"]
+    "lib": ["es2015", "dom", "dom.iterable"],
   },
   "include": [
     "src", "test"
