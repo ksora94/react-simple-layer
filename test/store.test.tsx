@@ -5,31 +5,31 @@ import { LayerStore, useLayerStore, Layer } from '../src/store';
 
 describe('LayerStore', () => {
   beforeEach(() => {
-    // 每次测试前重置 LayerStore 状态
+    // Reset LayerStore state before each test
     LayerStore.layers = [];
     LayerStore.listeners.clear();
   });
 
-  describe('初始状态', () => {
-    it('应该初始化为空数组', () => {
+  describe('Initial state', () => {
+    it('should initialize as an empty array', () => {
       expect(LayerStore.layers).toEqual([]);
       expect(LayerStore.layers).toHaveLength(0);
     });
 
-    it('应该有一个空的 listeners Set', () => {
+    it('should have an empty listeners Set', () => {
       expect(LayerStore.listeners).toBeInstanceOf(Set);
       expect(LayerStore.listeners.size).toBe(0);
     });
 
-    it('应该包含 add、destroy 和 notify 方法', () => {
+    it('should contain add, destroy and notify methods', () => {
       expect(typeof LayerStore.add).toBe('function');
       expect(typeof LayerStore.destroy).toBe('function');
       expect(typeof LayerStore.notify).toBe('function');
     });
   });
 
-  describe('add 方法', () => {
-    it('应该添加 layer 到 layers 数组', () => {
+  describe('add method', () => {
+    it('should add layer to layers array', () => {
       const layer: Layer = {
         key: 'test-layer',
         component: () => React.createElement('div'),
@@ -42,7 +42,7 @@ describe('LayerStore', () => {
       expect(LayerStore.layers[0]).toBe(layer);
     });
 
-    it('应该按添加顺序保存 layers', () => {
+    it('should save layers in the order they were added', () => {
       const layer1: Layer = { key: 'layer-1', component: () => React.createElement('div'), destroy: () => {} };
       const layer2: Layer = { key: 'layer-2', component: () => React.createElement('div'), destroy: () => {} };
       const layer3: Layer = { key: 'layer-3', component: () => React.createElement('div'), destroy: () => {} };
@@ -57,7 +57,7 @@ describe('LayerStore', () => {
       expect(LayerStore.layers[2].key).toBe('layer-3');
     });
 
-    it('应该允许添加相同 key 的 layer 多次', () => {
+    it('should allow adding layers with the same key multiple times', () => {
       const layer: Layer = { key: 'duplicate', component: () => React.createElement('div'), destroy: () => {} };
 
       LayerStore.add(layer);
@@ -66,7 +66,7 @@ describe('LayerStore', () => {
       expect(LayerStore.layers).toHaveLength(2);
     });
 
-    it('添加 layer 后应该调用 notify', () => {
+    it('should call notify after adding layer', () => {
       const listener = vi.fn();
       LayerStore.listeners.add(listener);
 
@@ -77,8 +77,8 @@ describe('LayerStore', () => {
     });
   });
 
-  describe('destroy 方法', () => {
-    it('应该根据 key 移除 layer', () => {
+  describe('destroy method', () => {
+    it('should remove layer by key', () => {
       const layer1: Layer = { key: 'layer-1', component: () => React.createElement('div'), destroy: () => {} };
       const layer2: Layer = { key: 'layer-2', component: () => React.createElement('div'), destroy: () => {} };
 
@@ -91,7 +91,7 @@ describe('LayerStore', () => {
       expect(LayerStore.layers[0].key).toBe('layer-2');
     });
 
-    it('应该移除所有匹配 key 的 layers', () => {
+    it('should remove all layers with matching key', () => {
       const layer1: Layer = { key: 'same-key', component: () => React.createElement('div'), destroy: () => {} };
       const layer2: Layer = { key: 'same-key', component: () => React.createElement('div'), destroy: () => {} };
       const layer3: Layer = { key: 'different', component: () => React.createElement('div'), destroy: () => {} };
@@ -106,7 +106,7 @@ describe('LayerStore', () => {
       expect(LayerStore.layers[0].key).toBe('different');
     });
 
-    it('删除不存在的 key 不应该报错', () => {
+    it('should not throw error when deleting non-existent key', () => {
       expect(() => {
         LayerStore.destroy('non-existent');
       }).not.toThrow();
@@ -114,7 +114,7 @@ describe('LayerStore', () => {
       expect(LayerStore.layers).toHaveLength(0);
     });
 
-    it('销毁 layer 后应该调用 notify', () => {
+    it('should call notify after destroying layer', () => {
       const listener = vi.fn();
       const layer: Layer = { key: 'test', component: () => React.createElement('div'), destroy: () => {} };
 
@@ -127,7 +127,7 @@ describe('LayerStore', () => {
       expect(listener).toHaveBeenCalledTimes(1);
     });
 
-    it('应该保留其他 layers 的顺序', () => {
+    it('should preserve the order of other layers', () => {
       const layer1: Layer = { key: 'layer-1', component: () => React.createElement('div'), destroy: () => {} };
       const layer2: Layer = { key: 'layer-2', component: () => React.createElement('div'), destroy: () => {} };
       const layer3: Layer = { key: 'layer-3', component: () => React.createElement('div'), destroy: () => {} };
@@ -147,8 +147,8 @@ describe('LayerStore', () => {
     });
   });
 
-  describe('notify 方法', () => {
-    it('应该调用所有注册的 listeners', () => {
+  describe('notify method', () => {
+    it('should call all registered listeners', () => {
       const listener1 = vi.fn();
       const listener2 = vi.fn();
       const listener3 = vi.fn();
@@ -164,13 +164,13 @@ describe('LayerStore', () => {
       expect(listener3).toHaveBeenCalledTimes(1);
     });
 
-    it('没有 listeners 时调用 notify 不应该报错', () => {
+    it('should not throw error when calling notify without listeners', () => {
       expect(() => {
         LayerStore.notify();
       }).not.toThrow();
     });
 
-    it('多次调用 notify 应该多次触发 listeners', () => {
+    it('should trigger listeners multiple times when called multiple times', () => {
       const listener = vi.fn();
       LayerStore.listeners.add(listener);
 
@@ -182,8 +182,8 @@ describe('LayerStore', () => {
     });
   });
 
-  describe('listeners 管理', () => {
-    it('应该能添加 listener', () => {
+  describe('listeners management', () => {
+    it('should be able to add listener', () => {
       const listener = vi.fn();
 
       LayerStore.listeners.add(listener);
@@ -192,7 +192,7 @@ describe('LayerStore', () => {
       expect(LayerStore.listeners.has(listener)).toBe(true);
     });
 
-    it('应该能移除 listener', () => {
+    it('should be able to remove listener', () => {
       const listener = vi.fn();
 
       LayerStore.listeners.add(listener);
@@ -203,7 +203,7 @@ describe('LayerStore', () => {
       expect(LayerStore.listeners.has(listener)).toBe(false);
     });
 
-    it('移除 listener 后不应该再收到通知', () => {
+    it('should not receive notifications after listener is removed', () => {
       const listener = vi.fn();
 
       LayerStore.listeners.add(listener);
@@ -218,31 +218,31 @@ describe('LayerStore', () => {
     });
   });
 
-  describe('集成测试', () => {
-    it('完整的添加和删除流程', () => {
+  describe('Integration tests', () => {
+    it('complete add and delete flow', () => {
       const listener = vi.fn();
       LayerStore.listeners.add(listener);
 
       const layer1: Layer = { key: 'layer-1', component: () => React.createElement('div'), destroy: () => {} };
       const layer2: Layer = { key: 'layer-2', component: () => React.createElement('div'), destroy: () => {} };
 
-      // 添加第一个 layer
+      // Add first layer
       LayerStore.add(layer1);
       expect(LayerStore.layers).toHaveLength(1);
       expect(listener).toHaveBeenCalledTimes(1);
 
-      // 添加第二个 layer
+      // Add second layer
       LayerStore.add(layer2);
       expect(LayerStore.layers).toHaveLength(2);
       expect(listener).toHaveBeenCalledTimes(2);
 
-      // 删除第一个 layer
+      // Delete first layer
       LayerStore.destroy('layer-1');
       expect(LayerStore.layers).toHaveLength(1);
       expect(LayerStore.layers[0].key).toBe('layer-2');
       expect(listener).toHaveBeenCalledTimes(3);
 
-      // 删除第二个 layer
+      // Delete second layer
       LayerStore.destroy('layer-2');
       expect(LayerStore.layers).toHaveLength(0);
       expect(listener).toHaveBeenCalledTimes(4);
@@ -256,14 +256,14 @@ describe('useLayerStore', () => {
     LayerStore.listeners.clear();
   });
 
-  it('应该返回 layers 数组', () => {
+  it('should return layers array', () => {
     const { result } = renderHook(() => useLayerStore());
 
     expect(result.current).toEqual(LayerStore.layers);
     expect(Array.isArray(result.current)).toBe(true);
   });
 
-  it('应该响应 LayerStore 的变化', () => {
+  it('should respond to LayerStore changes', () => {
     const { result } = renderHook(() => useLayerStore());
 
     expect(result.current).toHaveLength(0);
@@ -276,7 +276,7 @@ describe('useLayerStore', () => {
     expect(result.current).toHaveLength(1);
   });
 
-  it('应该在组件卸载时清理 listener', () => {
+  it('should cleanup listener on component unmount', () => {
     const { unmount } = renderHook(() => useLayerStore());
 
     const initialListenerCount = LayerStore.listeners.size;
@@ -287,7 +287,7 @@ describe('useLayerStore', () => {
     expect(LayerStore.listeners.size).toBe(0);
   });
 
-  it('多个组件可以同时订阅 LayerStore', () => {
+  it('multiple components can subscribe to LayerStore simultaneously', () => {
     const { result: result1 } = renderHook(() => useLayerStore());
     const { result: result2 } = renderHook(() => useLayerStore());
     const { result: result3 } = renderHook(() => useLayerStore());
@@ -304,7 +304,7 @@ describe('useLayerStore', () => {
     expect(result3.current).toHaveLength(1);
   });
 
-  it('卸载一个组件不应该影响其他订阅者', () => {
+  it('unmounting one component should not affect other subscribers', () => {
     const { unmount: unmount1 } = renderHook(() => useLayerStore());
     const { result: result2 } = renderHook(() => useLayerStore());
 
@@ -322,7 +322,7 @@ describe('useLayerStore', () => {
     expect(result2.current).toHaveLength(1);
   });
 
-  it('应该实时反映 layers 的添加', () => {
+  it('should reflect layer additions in real-time', () => {
     const { result, rerender } = renderHook(() => useLayerStore());
 
     expect(result.current).toHaveLength(0);
@@ -341,7 +341,7 @@ describe('useLayerStore', () => {
     expect(result.current).toHaveLength(3);
   });
 
-  it('应该实时反映 layers 的删除', () => {
+  it('should reflect layer deletions in real-time', () => {
     const { result } = renderHook(() => useLayerStore());
 
     act(() => {

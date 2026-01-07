@@ -5,7 +5,7 @@ import { createLayer, LC, LayerInstance } from '../src/utils';
 import { LayerStore } from '../src/store';
 import { LayerRoot } from '../src/Layer';
 
-// 测试用的组件
+// Test component
 interface TestComponentProps {
   message: string;
   count?: number;
@@ -26,13 +26,13 @@ const TestComponent: LC<TestComponentProps> = ({ message, count = 0, layer }) =>
 
 describe('createLayer', () => {
   beforeEach(() => {
-    // 每次测试前清空 LayerStore
+    // Clear LayerStore before each test
     LayerStore.layers = [];
     LayerStore.listeners.clear();
   });
 
-  describe('基本功能', () => {
-    it('应该创建一个 LayerInstance 实例', () => {
+  describe('Basic functionality', () => {
+    it('should create a LayerInstance', () => {
       const instance = createLayer(TestComponent);
 
       expect(instance).toBeDefined();
@@ -41,7 +41,7 @@ describe('createLayer', () => {
       expect(instance.destroy).toBeInstanceOf(Function);
     });
 
-    it('应该返回包含 layer、render 和 destroy 属性的对象', () => {
+    it('should return object with layer, render and destroy properties', () => {
       const instance = createLayer(TestComponent);
 
       expect(instance).toHaveProperty('layer');
@@ -49,7 +49,7 @@ describe('createLayer', () => {
       expect(instance).toHaveProperty('destroy');
     });
 
-    it('layer 应该包含 key 和 component 属性', () => {
+    it('layer should contain key and component properties', () => {
       const instance = createLayer(TestComponent);
 
       expect(instance.layer).toHaveProperty('key');
@@ -59,8 +59,8 @@ describe('createLayer', () => {
     });
   });
 
-  describe('key 生成', () => {
-    it('没有提供 key 时应该自动生成随机 key', () => {
+  describe('Key generation', () => {
+    it('should auto-generate random key when not provided', () => {
       const instance1 = createLayer(TestComponent);
       const instance2 = createLayer(TestComponent);
 
@@ -69,14 +69,14 @@ describe('createLayer', () => {
       expect(instance1.layer.key).not.toBe(instance2.layer.key);
     });
 
-    it('提供自定义 key 时应该使用该 key', () => {
+    it('should use custom key when provided', () => {
       const customKey = 'my-custom-layer-key';
       const instance = createLayer(TestComponent, customKey);
 
       expect(instance.layer.key).toBe(customKey);
     });
 
-    it('自动生成的 key 应该是16进制字符串', () => {
+    it('auto-generated key should be hexadecimal string', () => {
       const instance = createLayer(TestComponent);
       const hexPattern = /^[0-9a-f]+$/;
 
@@ -84,15 +84,15 @@ describe('createLayer', () => {
     });
   });
 
-  describe('render 方法', () => {
-    it('应该返回 void', () => {
+  describe('render method', () => {
+    it('should return void', () => {
       const instance = createLayer(TestComponent);
       const result = instance.render({ message: 'Hello' });
 
       expect(result).toBeUndefined();
     });
 
-    it('应该将 layer 添加到 LayerStore', () => {
+    it('should add layer to LayerStore', () => {
       const instance = createLayer(TestComponent);
 
       expect(LayerStore.layers).toHaveLength(0);
@@ -103,17 +103,17 @@ describe('createLayer', () => {
       expect(LayerStore.layers[0].key).toBe(instance.layer.key);
     });
 
-    it('应该将 layer 和 destroy 作为 props 注入到 LayerStore', () => {
+    it('should inject layer and destroy as props to LayerStore', () => {
       const instance = createLayer(TestComponent);
 
       instance.render({ message: 'Test' });
 
       expect(LayerStore.layers).toHaveLength(1);
       expect(LayerStore.layers[0].key).toBe(instance.layer.key);
-      // layer 已经被添加到 store 中
+      // layer has been added to store
     });
 
-    it('调用 render 时应该将 layer 添加到 LayerStore', () => {
+    it('should add layer to LayerStore when render is called', () => {
       const instance = createLayer(TestComponent);
 
       expect(LayerStore.layers).toHaveLength(0);
@@ -124,7 +124,7 @@ describe('createLayer', () => {
       expect(LayerStore.layers[0].key).toBe(instance.layer.key);
     });
 
-    it('多次调用 render 应该多次添加到 LayerStore', () => {
+    it('calling render multiple times should add to LayerStore multiple times', () => {
       const instance = createLayer(TestComponent);
 
       instance.render({ message: 'First' });
@@ -134,8 +134,8 @@ describe('createLayer', () => {
     });
   });
 
-  describe('destroy 方法', () => {
-    it('应该从 LayerStore 中移除 layer', () => {
+  describe('destroy method', () => {
+    it('should remove layer from LayerStore', () => {
       const instance = createLayer(TestComponent);
       instance.render({ message: 'Test' });
 
@@ -146,7 +146,7 @@ describe('createLayer', () => {
       expect(LayerStore.layers).toHaveLength(0);
     });
 
-    it('销毁未添加的 layer 不应该报错', () => {
+    it('should not throw error when destroying un-added layer', () => {
       const instance = createLayer(TestComponent);
 
       expect(() => {
@@ -154,7 +154,7 @@ describe('createLayer', () => {
       }).not.toThrow();
     });
 
-    it('多次调用 destroy 不应该报错', () => {
+    it('should not throw error when calling destroy multiple times', () => {
       const instance = createLayer(TestComponent);
       instance.render({ message: 'Test' });
 
@@ -165,10 +165,10 @@ describe('createLayer', () => {
       }).not.toThrow();
     });
 
-    it('通过组件内的 destroy prop 调用应该移除 layer', () => {
+    it('calling destroy prop inside component should remove layer', () => {
       const instance = createLayer(TestComponent);
 
-      // 需要先渲染 LayerRoot 才能看到组件
+      // Need to render LayerRoot first to see component
       render(<LayerRoot />);
       act(() => {
         instance.render({ message: 'Test' });
@@ -183,8 +183,8 @@ describe('createLayer', () => {
     });
   });
 
-  describe('多个 layer 实例', () => {
-    it('应该能够独立管理多个 layer', () => {
+  describe('Multiple layer instances', () => {
+    it('should independently manage multiple layers', () => {
       const instance1 = createLayer(TestComponent, 'layer-1');
       const instance2 = createLayer(TestComponent, 'layer-2');
       const instance3 = createLayer(TestComponent, 'layer-3');
@@ -203,7 +203,7 @@ describe('createLayer', () => {
       expect(LayerStore.layers.find(l => l.key === 'layer-3')).toBeDefined();
     });
 
-    it('销毁一个 layer 不应该影响其他 layer', () => {
+    it('destroying one layer should not affect other layers', () => {
       const instance1 = createLayer(TestComponent, 'layer-1');
       const instance2 = createLayer(TestComponent, 'layer-2');
 
@@ -217,8 +217,8 @@ describe('createLayer', () => {
     });
   });
 
-  describe('LayerStore 通知机制', () => {
-    it('render 时应该通知 listeners', () => {
+  describe('LayerStore notification mechanism', () => {
+    it('should notify listeners when render is called', () => {
       const listener = vi.fn();
       LayerStore.listeners.add(listener);
 
@@ -228,7 +228,7 @@ describe('createLayer', () => {
       expect(listener).toHaveBeenCalled();
     });
 
-    it('destroy 时应该通知 listeners', () => {
+    it('should notify listeners when destroy is called', () => {
       const listener = vi.fn();
       const instance = createLayer(TestComponent);
       instance.render({ message: 'Test' });
@@ -242,15 +242,15 @@ describe('createLayer', () => {
     });
   });
 
-  describe('类型测试', () => {
-    it('应该正确处理泛型 props', () => {
+  describe('Type tests', () => {
+    it('should correctly handle generic props', () => {
       interface CustomProps {
         title: string;
         value: number;
         onAction?: () => void;
       }
 
-      const CustomComponent: LC<CustomProps> = ({ title, value, layer, destroy }) => (
+      const CustomComponent: LC<CustomProps> = ({ title, value }) => (
         <div>
           <h1>{title}</h1>
           <p>{value}</p>
@@ -259,30 +259,30 @@ describe('createLayer', () => {
 
       const instance: LayerInstance<CustomProps> = createLayer(CustomComponent);
 
-      // TypeScript 应该允许这样的调用
+      // TypeScript should allow this call
       instance.render({ title: 'Test', value: 100 });
 
       expect(LayerStore.layers).toHaveLength(1);
     });
 
-    it('render 方法返回的 props 应该省略 LayerProps', () => {
+    it('render method props should omit LayerProps', () => {
       const instance = createLayer(TestComponent);
 
-      // 这个测试确保 TypeScript 类型定义正确
-      // render 方法应该接收不包含 layer 和 destroy 的 props
+      // This test ensures TypeScript type definition is correct
+      // render method should receive props without layer and destroy
       const result = instance.render({
         message: 'Test',
         count: 1,
       });
 
-      // render 方法现在返回 void
+      // render method now returns void
       expect(result).toBeUndefined();
       expect(LayerStore.layers).toHaveLength(1);
     });
   });
 
-  describe('组件渲染', () => {
-    it('layer.component 应该正确渲染包装后的组件', () => {
+  describe('Component rendering', () => {
+    it('layer.component should correctly render wrapped component', () => {
       const instance = createLayer(TestComponent);
       const ComponentToRender = instance.layer.component;
 
@@ -294,7 +294,7 @@ describe('createLayer', () => {
       expect(screen.getByTestId('count')).toHaveTextContent('99');
     });
 
-    it('应该正确传递所有 props 到底层组件', () => {
+    it('should correctly pass all props to underlying component', () => {
       interface ComplexProps {
         text: string;
         numbers: number[];

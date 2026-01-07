@@ -2,9 +2,9 @@ import {type FC, useSyncExternalStore} from 'react';
 
 export type Layer<T = any> = {
   key: string;
-  props?: T;
   component: FC<T>
   destroy(): void;
+  props?: T;
 }
 
 export const LayerStore: {

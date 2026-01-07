@@ -13,7 +13,7 @@ export type LayerInstance<T> = {
   destroy(): void;
 }
 
-export function createLayer<T>(Component: LC<T>, key?: string): LayerInstance<T> {
+export function createLayer<T = any>(Component: LC<T>, key?: string): LayerInstance<T> {
   const layer: Layer = {
     key: key || Math.random().toString(16).slice(2),
     destroy() {
